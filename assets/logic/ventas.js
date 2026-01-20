@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.setAttribute("data-bs-theme", savedTheme);
 
   cargarVentasHoy();
+  cargarHistorialVentas();
 });
 
 btnTheme.addEventListener("click", () => {
@@ -177,7 +178,7 @@ document.getElementById("btn-facturar").addEventListener("click", async () => {
 
   const venta = {
     id: Date.now(),
-    fecha: new Date().toISOString(),
+    fecha: new Date().toLocaleString("sv-SE"),
     items: JSON.parse(JSON.stringify(carrito)),
     total: carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0),
   };
@@ -208,8 +209,9 @@ document.getElementById("btn-facturar").addEventListener("click", async () => {
 
 // VENTAS DEL DÍA
 function cargarVentasHoy() {
-  const hoy = new Date().toISOString().split("T")[0];
-  const ventasHoy = ventas.filter((v) => v.fecha.split("T")[0] === hoy);
+  const hoy = new Date().toLocaleDateString("sv-SE"); // YYYY-MM-DD
+
+  const ventasHoy = ventas.filter((v) => v.fecha.split(" ")[0] === hoy);
 
   const container = document.getElementById("ventas-hoy");
 
@@ -221,12 +223,12 @@ function cargarVentasHoy() {
   container.innerHTML = ventasHoy
     .map(
       (v) => `
-    <div class="venta-card" onclick="verDetalleFactura(${v.id})">
-      <p><strong>Factura #${v.id}</strong></p>
-      <p>${new Date(v.fecha).toLocaleTimeString("es-CO")}</p>
-      <p>Total: $${v.total.toLocaleString("es-CO")}</p>
-    </div>
-  `,
+      <div class="venta-card" onclick="verDetalleFactura(${v.id})">
+        <p><strong>Factura #${v.id}</strong></p>
+        <p>${new Date(v.fecha).toLocaleTimeString("es-CO")}</p>
+        <p>Total: $${v.total.toLocaleString("es-CO")}</p>
+      </div>
+    `,
     )
     .join("");
 }
@@ -383,4 +385,39 @@ document.getElementById("importFile").addEventListener("change", function (e) {
   };
 
   reader.readAsText(file);
+});
+
+function cargarHistorialVentas(fecha = null) {
+  const container = document.getElementById("ventas-historial");
+
+  let lista = ventas;
+
+  if (fecha) {
+    lista = ventas.filter((v) => v.fecha.split("T")[0] === fecha);
+  }
+
+  if (lista.length === 0) {
+    container.innerHTML = "<p>No hay ventas registradas</p>";
+    return;
+  }
+
+  container.innerHTML = lista
+    .map(
+      (v) => `
+      <div class="venta-card" onclick="verDetalleFactura(${v.id})">
+        <p><strong>Factura #${v.id}</strong></p>
+        <p>${new Date(v.fecha).toLocaleString("es-CO")}</p>
+        <p>Total: $${v.total.toLocaleString("es-CO")}</p>
+      </div>
+    `,
+    )
+    .join("");
+}
+
+document.getElementById("filtro-fecha").addEventListener("change", (e) => {
+  cargarHistorialVentas(e.target.value);
+});
+
+document.getElementById("btn-ver-todas").addEventListener("click", () => {
+  cargarHistorialVentas();
 });
