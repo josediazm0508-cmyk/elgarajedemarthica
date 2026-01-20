@@ -1,0 +1,64 @@
+@import "./main.css";
+
+.daily-resume{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.card-daily{
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 1px 1px 10px rgb(0, 0, 0, 0.4);
+    border-radius: 10px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--color-text);
+}
+
+.card-daily ul{
+    margin-left: 20px;
+}
+
+section .title-section{
+    text-align: center;
+    font-size: 40px;
+}
+
+section{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.other-resume{
+    display: flex;
+    justify-content: space-around;
+}
+
+.other-resume div{
+    width: 48%;
+    min-height: 400px; 
+}
+
+.filters-resume{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.filters-resume label{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.filters-resume select{
+    background-color: var(--bg-secondary);
+    color: var(--color-text);
+    padding: 10px;
+    border-radius: 5px;
+}
