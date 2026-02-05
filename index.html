@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Garaje De Marthica | Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/styles/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <nav id="navbar">
+        <div class="divimg">
+            <a href="./index.html">
+                <img src="./assets/images/mainlogo.png" alt="El garaje de marthica">
+            </a>
+            <h1>El Garaje De Marthica</h1>
+        </div>
+        <div class="menu">
+            <a href="./assets/pages/ventas.html">Ventas</a>
+            <a href="./assets/pages/products.html">Productos</a>
+            <a href="./assets/pages/insumos.html">Insumos</a>
+            <button id="btn-backup">💾</button>
+            <input type="file" id="importFile" accept=".json" hidden>
+            <button onclick="document.getElementById('importFile').click()">
+                📲
+            </button>
+            <button id="btn-theme"><i class="bi bi-sun-fill"></i></button>
+        </div>
+    </nav>
+
+    <div id="content">
+        <section>
+            <h2 class="title-section">Resumen Diario (<span id="date-daily-resume"></span>)</h2>
+            <div class="daily-resume">
+                <div class="card-daily">
+                    <h2>Ventas de Hoy</h2>
+                    <h3>Total: </h3>
+                    <h4>No. Ventas: </h4>
+                </div>
+                <div class="card-daily">
+                    <h2>Ganancias de Hoy</h2>
+                    <h3>Ganancia neta: </h3>
+                    <h4>Margen de ganancia: </h4>
+                </div>
+                <div class="card-daily">
+                    <h2>Productos Más Vendidos Hoy</h2>
+                    <ul>
+                        <li>Item1</li>
+                        <li>Item2</li>
+                        <li>Item3</li>
+                        <li>Item4</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2 class="title-section">Datos de Ventas</h2>
+            <div class="filters-resume">
+                <label>
+                    Año:
+                    <select name="" id="select-year">
+                
+                    </select>
+                </label>
+                <label>
+                    Mes:
+                    <select name="" id="select-month">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </label>
+                <label>
+                    Semana: 
+                    <select name="" id="select-week">
+                        <option value="1">Semana 1</option>
+                        <option value="2">Semana 2</option>
+                        <option value="3">Semana 3</option>
+                        <option value="4">Semana 4</option>
+                        <option value="5">Semana 5</option>
+                    </select>
+                </label>
+            </div>
+            <div class="other-resume">
+                <div class="container mt-4">
+                    <canvas id="graficaMensual"></canvas>
+                </div>
+                <div class="container mt-4">
+                    <canvas id="graficaSemanal"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/logic/index.js"></script>
+</body>
+</html>

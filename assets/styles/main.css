@@ -1,0 +1,125 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Arimo";
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #ffffff;       
+    --bg-secondary: #f8f9fa;    
+    --color-text: #212529;        
+    --color-link: #0B0B0B;
+    --navbar-shadow: rgba(0, 0, 0, 0.1);
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --bg-button: #8888883c;
+}
+
+[data-bs-theme="dark"] {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --color-text: #e9ecef;
+    --color-link: #ffffff;
+    --navbar-shadow: rgba(0, 0, 0, 0.5);
+    --card-bg: #252525; 
+    --border-color: #444444;
+    --bg-button: #ffffff7f;
+}
+
+body{
+    background-color: var(--bg-secondary);
+    color: var(--color-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#navbar{
+    width: 100vw;
+    height: 120px;
+    display: flex;
+    box-shadow: 0 2px 10px rgb(0, 0, 0, 0.2);
+    padding: 20px;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--bg-primary);
+    box-shadow: 0 2px 10px var(--navbar-shadow);
+    color: var(--color-text);
+}
+
+#navbar a{
+    max-height: 100%;
+}
+
+#navbar a img{
+    height: 100%;
+}
+
+#navbar .divimg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#navbar .divimg img {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+}
+
+#navbar .menu{
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    width: auto;
+    align-items: center;
+    color: var(--color-link);
+}
+
+#navbar .menu a{
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--color-link);
+}
+
+#navbar .menu a::after{
+    content: "";
+    width: 0;
+    height: 3px;
+    display: block;
+    background-color: var(--color-text);
+    transition: width 0.3s ease;
+}
+
+#navbar .menu a:hover::after{
+    width: 100%;
+}
+
+#navbar .menu button{
+    padding: 5px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: gold;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    transition: 0.3s ease;
+}
+
+#navbar .menu button:hover{
+    background-color: var(--bg-button);
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}
+
+#content{
+    margin-top: 120px;
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
