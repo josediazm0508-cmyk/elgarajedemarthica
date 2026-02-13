@@ -6,6 +6,7 @@ let editando = null;
 let insumos = [];
 let productos = [];
 let ventas;
+let codigoEditando = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -289,6 +290,16 @@ function deleteInsumo(id) {
   actualizarTotales();
 }
 
+function generarCodigoProducto() {
+  if (productos.length === 0) return "001";
+
+  const numeros = productos.map(p => parseInt(p.codigo || "0"));
+  const max = Math.max(...numeros);
+
+  return (max + 1).toString().padStart(3, "0");
+}
+
+
 document.getElementById("form-prod").addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -307,8 +318,11 @@ document.getElementById("form-prod").addEventListener("submit", (e) => {
     document.getElementById("input-cantidad-producida").value,
   );
 
+  const codigo = codigoEditando || generarCodigoProducto();
+
   const producto = {
     id: Date.now(),
+    codigo,
     nombre,
     precioVenta,
     categoria: categoria || "Sin categoría",
@@ -339,6 +353,7 @@ function renderTablaProductos(lista) {
 
     tr.innerHTML = `
       <td>${p.nombre}</td>
+      <td>${p.codigo}</td>
       <td>$${p.precioVenta.toLocaleString("es-CO")}</td>
       <td>$${costo.toLocaleString("es-CO")}</td>
       <td>${margen.toFixed(2)}%</td>
@@ -375,6 +390,8 @@ function calcularMargen(precio, costo) {
 function editarProducto(id) {
   const producto = productos.find((p) => p.id === id);
   if (!producto) return;
+
+  codigoEditando = producto.codigo;
 
   receta = JSON.parse(JSON.stringify(producto.receta));
 
@@ -420,7 +437,8 @@ function cerrarModalProducto() {
 
   receta = [];
   editando = null;
-  actualizarTotales();
+  actualizarTotales()
+  codigoEditando = null;;
 }
 
 document

@@ -31,33 +31,50 @@ btnTheme.addEventListener("click", () => {
   localStorage.setItem("theme", newTheme);
 });
 
-// BUSCADOR DE PRODUCTOS
-const searchInput = document.getElementById("search-producto");
+// ================= BUSCADOR DE PRODUCTOS =================
+const buscadores = document.querySelectorAll(".buscadores input");
+
+const inputCodigo = buscadores[0];
+const inputNombre = buscadores[1];
+const inputCategoria = buscadores[2];
+
 const resultadosDiv = document.getElementById("resultados-busqueda");
 
-searchInput.addEventListener("input", (e) => {
-  const query = e.target.value.toLowerCase().trim();
+function buscarProductos() {
+  const codigo = inputCodigo.value.toLowerCase().trim();
+  const nombre = inputNombre.value.toLowerCase().trim();
+  const categoria = inputCategoria.value.toLowerCase().trim();
 
-  if (query.length < 2) {
+  if (!codigo && !nombre && !categoria) {
     resultadosDiv.innerHTML = "";
     return;
   }
 
-  const filtrados = productos.filter((p) =>
-    p.nombre.toLowerCase().includes(query),
-  );
+  const filtrados = productos.filter((p) => {
+    const coincideCodigo = !codigo || (p.codigo || "").toLowerCase().includes(codigo);
+    const coincideNombre = !nombre || p.nombre.toLowerCase().includes(nombre);
+    const coincideCategoria =
+      !categoria || (p.categoria || "").toLowerCase().includes(categoria);
+
+    return coincideCodigo && coincideNombre && coincideCategoria;
+  });
 
   resultadosDiv.innerHTML = filtrados
     .map(
       (p) => `
-    <div class="resultado-item" onclick="agregarAlCarrito(${p.id})">
-      <span>${p.nombre}</span>
-      <span>$${p.precioVenta.toLocaleString("es-CO")}</span>
-    </div>
-  `,
+      <div class="resultado-item" onclick="agregarAlCarrito(${p.id})">
+        <span>${p.codigo || ""} - ${p.nombre}</span>
+        <span>$${p.precioVenta.toLocaleString("es-CO")}</span>
+      </div>
+    `,
     )
     .join("");
-});
+}
+
+// Escuchar cambios en los 3 inputs
+inputCodigo.addEventListener("input", buscarProductos);
+inputNombre.addEventListener("input", buscarProductos);
+inputCategoria.addEventListener("input", buscarProductos);
 
 // AGREGAR AL CARRITO
 function agregarAlCarrito(productoId) {

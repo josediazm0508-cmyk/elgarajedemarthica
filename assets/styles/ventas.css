@@ -10,14 +10,35 @@
     position: relative;
 }
 
-#search-producto {
-    width: 100%;
+.buscadores {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.buscadores input {
     padding: 15px;
     font-size: 18px;
     border: 2px solid var(--border-color);
     border-radius: 10px;
     background-color: var(--bg-primary);
     color: var(--color-text);
+}
+
+/* Código (más corto) */
+.buscadores input:nth-child(1) {
+    width: 100px;
+}
+
+/* Nombre (más largo) */
+.buscadores input:nth-child(2) {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Categoría (medio) */
+.buscadores input:nth-child(3) {
+    width: 180px;
 }
 
 #resultados-busqueda {
