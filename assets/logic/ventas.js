@@ -123,7 +123,13 @@ function renderCarrito() {
       <span class="nombre">${item.nombre}</span>
       <div class="cantidad-control">
         <button onclick="cambiarCantidad(${index}, -1)">-</button>
-        <span>${item.cantidad}</span>
+        <input 
+          type="number" 
+          min="1"
+          value="${item.cantidad}" 
+          onchange="actualizarCantidad(${index}, this.value)"
+          class="input-cantidad"
+        />
         <button onclick="cambiarCantidad(${index}, 1)"${!hayStockParaCantidad(item.productoId, item.cantidad + 1) ? "disabled" : ""} ${!hayStockParaCantidad(item.productoId, item.cantidad + 1) ? 'class="disabled"' : ""}>+</button>
       </div>
       <span class="precio">$${(item.precio * item.cantidad).toLocaleString("es-CO")}</span>
@@ -827,3 +833,25 @@ document.addEventListener("DOMContentLoaded", () => {
     btnAbrirCaja.addEventListener("click", abrirCajaSimulada);
   }
 });
+
+function actualizarCantidad(index, nuevaCantidad) {
+  const item = carrito[index];
+  if (!item) return;
+
+  nuevaCantidad = parseInt(nuevaCantidad);
+
+  if (isNaN(nuevaCantidad) || nuevaCantidad <= 0) {
+    alert("Cantidad inválida");
+    renderCarrito();
+    return;
+  }
+
+  if (!hayStockParaCantidad(item.productoId, nuevaCantidad)) {
+    alert("❌ Stock insuficiente");
+    renderCarrito();
+    return;
+  }
+
+  item.cantidad = nuevaCantidad;
+  renderCarrito();
+}
