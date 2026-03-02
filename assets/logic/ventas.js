@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cargarVentasHoy();
   cargarHistorialVentas();
+  buscarProductos()
 });
 
 btnTheme.addEventListener("click", () => {
@@ -39,18 +40,15 @@ const inputNombre = buscadores[1];
 const inputCategoria = buscadores[2];
 
 const resultadosDiv = document.getElementById("resultados-busqueda");
+let productosFiltrados = [];
+let indiceSeleccionado = 0;
 
 function buscarProductos() {
   const codigo = inputCodigo.value.toLowerCase().trim();
   const nombre = inputNombre.value.toLowerCase().trim();
   const categoria = inputCategoria.value.toLowerCase().trim();
 
-  if (!codigo && !nombre && !categoria) {
-    resultadosDiv.innerHTML = "";
-    return;
-  }
-
-  const filtrados = productos.filter((p) => {
+  productosFiltrados = productos.filter((p) => {
     const coincideCodigo = !codigo || (p.codigo || "").toLowerCase().includes(codigo);
     const coincideNombre = !nombre || p.nombre.toLowerCase().includes(nombre);
     const coincideCategoria =
@@ -59,15 +57,25 @@ function buscarProductos() {
     return coincideCodigo && coincideNombre && coincideCategoria;
   });
 
-  resultadosDiv.innerHTML = filtrados
-    .map(
-      (p) => `
-      <div class="resultado-item" onclick="agregarAlCarrito(${p.id})">
-        <span>${p.codigo || ""} - ${p.nombre}</span>
+  indiceSeleccionado = 0;
+  renderListaProductos();
+}
+
+function renderListaProductos() {
+  if (productosFiltrados.length === 0) {
+    resultadosDiv.innerHTML = "<p>No hay productos</p>";
+    return;
+  }
+
+  resultadosDiv.innerHTML = productosFiltrados
+    .map((p, index) => `
+      <div 
+        class="resultado-item ${index === indiceSeleccionado ? "activo" : ""}"
+      >
+        <span>${p.nombre}</span>
         <span>$${p.precioVenta.toLocaleString("es-CO")}</span>
       </div>
-    `,
-    )
+    `)
     .join("");
 }
 
@@ -828,10 +836,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ventanaPrueba.document.close();
     });
   }
-  
-  if (btnAbrirCaja) {
-    btnAbrirCaja.addEventListener("click", abrirCajaSimulada);
-  }
 });
 
 function actualizarCantidad(index, nuevaCantidad) {
@@ -855,3 +859,36 @@ function actualizarCantidad(index, nuevaCantidad) {
   item.cantidad = nuevaCantidad;
   renderCarrito();
 }
+
+document.addEventListener("keydown", (e) => {
+  if (productosFiltrados.length === 0) return;
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    indiceSeleccionado++;
+    if (indiceSeleccionado >= productosFiltrados.length) {
+      indiceSeleccionado = 0;
+    }
+    renderListaProductos();
+  }
+
+  if (e.key === "ArrowUp") {
+    e.preventDefault();
+    indiceSeleccionado--;
+    if (indiceSeleccionado < 0) {
+      indiceSeleccionado = productosFiltrados.length - 1;
+    }
+    renderListaProductos();
+  }
+
+  if (e.key === "Enter" && !e.ctrlKey) {
+    e.preventDefault();
+    const producto = productosFiltrados[indiceSeleccionado];
+    agregarAlCarrito(producto.id);
+  }
+
+  if (e.key === "Enter" && e.ctrlKey) {
+    e.preventDefault();
+    document.getElementById("btn-facturar").click();
+  }
+});

@@ -1,0 +1,98 @@
+@import "./main.css";
+
+.vr-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.vr-caja {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.vr-caja h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.vr-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vr-input-group input {
+    padding: 20px;
+    font-size: 28px;
+    text-align: right;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--color-text);
+}
+
+.vr-total-preview {
+    display: flex;
+    justify-content: space-between;
+    font-size: 26px;
+    margin: 25px 0;
+}
+
+.vr-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.vr-btn-primary {
+    flex: 1;
+    padding: 18px;
+    font-size: 20px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.vr-btn-secondary {
+    flex: 1;
+    padding: 18px;
+    font-size: 20px;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.vr-resumen,
+.vr-historial {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.vr-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+#vr-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vr-venta-item {
+    background-color: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}

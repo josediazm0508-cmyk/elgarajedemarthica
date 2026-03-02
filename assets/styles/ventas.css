@@ -284,3 +284,8 @@
   border: 1px solid #ccc;
   padding: 4px;
 }
+
+.resultado-item.activo {
+  background-color: #0d6efd;
+  color: white;
+}

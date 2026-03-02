@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Garaje De Marthica | VR</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../styles/ventaRapida.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="divimg">
+            <a href="../../index.html">
+                <img src="../images/mainlogo.png" alt="El garaje de marthica">
+            </a>
+            <h1>El Garaje De Marthica</h1>
+        </div>
+        <div class="menu">
+            <a href="./ventas.html">Ventas</a>
+            <a href="./products.html">Productos</a>
+            <a href="./insumos.html">Insumos</a>
+            <a href="./ventaRapida.html">Venta Rapida</a>
+            <button id="btn-backup">💾</button>
+            <input type="file" id="importFile" accept=".json" hidden>
+            <button onclick="document.getElementById('importFile').click()">
+                📲
+            </button>
+            <button id="btn-theme"><i class="bi bi-sun-fill"></i></button>
+        </div>
+    </nav>
+
+    <div id="content">
+        <div class="vr-container">
+            <section class="vr-caja">
+                <h2>💰 Caja Rápida</h2>
+
+                <div class="vr-input-group">
+                <label>Monto de la venta</label>
+                <input type="text" id="monto-rapido" autocomplete="off" />
+                </div>
+
+                <div class="vr-total-preview">
+                <span>Total:</span>
+                <strong id="vr-preview">$0</strong>
+                </div>
+
+                <div class="vr-actions">
+                <button id="vr-facturar" class="vr-btn-primary">Facturar</button>
+                <button id="vr-limpiar" class="vr-btn-secondary">Limpiar</button>
+                </div>
+            </section>
+
+            <section class="vr-resumen">
+                <h3>📊 Resumen del Día</h3>
+                <div class="vr-stats">
+                <div>
+                    <span>Ventas:</span>
+                    <strong id="vr-count">0</strong>
+                </div>
+                <div>
+                    <span>Total vendido:</span>
+                    <strong id="vr-total-dia">$0</strong>
+                </div>
+                </div>
+            </section>
+
+            <section class="vr-historial">
+                <h3>🧾 Últimas Ventas</h3>
+                <div id="vr-lista"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="../logic/ventaRapida.js"></script>
+</body>
+
+</html>
