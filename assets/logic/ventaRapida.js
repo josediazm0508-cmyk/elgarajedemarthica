@@ -18,6 +18,20 @@ function fechaHoraLocal() {
 }
 
 // ==========================
+// HELPER: Resumen diario
+// ==========================
+function guardarResumenRapida(fecha, total, ventasCount) {
+  const resumenHistorial = JSON.parse(localStorage.getItem("ventas_rapidas_resumen")) || [];
+  resumenHistorial.unshift({
+    fecha,
+    total,
+    ventas: ventasCount,
+  });
+  if (resumenHistorial.length > 30) resumenHistorial.length = 30;
+  localStorage.setItem("ventas_rapidas_resumen", JSON.stringify(resumenHistorial));
+}
+
+// ==========================
 // INICIO
 // ==========================
 document.addEventListener("DOMContentLoaded", () => {
@@ -51,6 +65,10 @@ function limpiarVentasAntiguas() {
   const fechaUltimaVenta = ventas[0].fecha.split("T")[0];
 
   if (fechaUltimaVenta !== hoy) {
+    // Guardar resumen del día anterior antes de limpiar
+    const totalDiaAnterior = ventas.reduce((sum, v) => sum + v.total, 0);
+    guardarResumenRapida(fechaUltimaVenta, totalDiaAnterior, ventas.length);
+
     ventas = [];
     localStorage.removeItem("ventas_rapidas_db");
     alert("🌅 Nuevo día. El resumen fue reiniciado.");
@@ -132,6 +150,11 @@ function registrarVenta() {
 
   try {
     localStorage.setItem("ventas_rapidas_db", JSON.stringify(ventas));
+
+    // También guardar en el historial general de ventas (para que las gráficas/estadísticas lo consideren)
+    const ventasDb = JSON.parse(localStorage.getItem("ventas_db")) || [];
+    ventasDb.unshift(venta);
+    localStorage.setItem("ventas_db", JSON.stringify(ventasDb));
   } catch (e) {
     ventas = ventas.slice(0, 500);
     localStorage.setItem("ventas_rapidas_db", JSON.stringify(ventas));
@@ -246,6 +269,9 @@ document.getElementById("btn-backup").addEventListener("click", () => {
   a.download = `venta-rapida_${hoy}.json`;
   a.click();
   URL.revokeObjectURL(url);
+
+  // Conserva un historial de cierres diarios para mostrar en el Home
+  guardarResumenRapida(hoy, totalDia, ventasHoy.length);
 
   ventas = [];
   localStorage.removeItem("ventas_rapidas_db");

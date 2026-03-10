@@ -24,12 +24,22 @@ document.addEventListener("DOMContentLoaded", () => {
   insumosMap = {};
   insumos.forEach((i) => (insumosMap[i.id] = i));
 
-  document.getElementById("date-daily-resume").textContent =
-    new Date().toLocaleDateString("es-CO", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+  const resumenRapida = JSON.parse(
+    localStorage.getItem("ventas_rapidas_resumen") || "[]",
+  );
+  const ultimoCierre = resumenRapida[0];
+
+  document.getElementById("date-daily-resume").textContent = ultimoCierre
+    ? new Date(ultimoCierre.fecha).toLocaleDateString("es-CO", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : new Date().toLocaleDateString("es-CO", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
 
   generarOptsAño();
   generarGraficas();
@@ -59,9 +69,25 @@ function generarOptsAño() {
   const container = selectyear;
   const currentYear = new Date().getFullYear();
 
+  // Determinar rango de años a partir de los datos disponibles.
+  const ventasYears = ventas
+    .map((v) => new Date(v.fecha).getFullYear())
+    .filter((y) => !isNaN(y));
+
+  const resumenRapida = JSON.parse(
+    localStorage.getItem("ventas_rapidas_resumen") || "[]",
+  );
+  const resumenYears = resumenRapida
+    .map((r) => new Date(r.fecha).getFullYear())
+    .filter((y) => !isNaN(y));
+
+  const allYears = [currentYear, ...ventasYears, ...resumenYears];
+  const minYear = Math.min(startyear, ...allYears);
+  const maxYear = Math.max(currentYear, ...allYears);
+
   container.innerHTML = "";
 
-  for (let i = startyear; i <= currentYear; i++) {
+  for (let i = minYear; i <= maxYear; i++) {
     let option = document.createElement("option");
     option.value = i;
     option.textContent = i;
@@ -205,8 +231,16 @@ function calcularResumenDiario() {
 
   const ventasHoy = ventas.filter((v) => v.fecha.split("T")[0] === hoy);
 
-  const totalVentas = ventasHoy.reduce((sum, v) => sum + v.total, 0);
-  const numVentas = ventasHoy.length;
+  const resumenRapida = JSON.parse(
+    localStorage.getItem("ventas_rapidas_resumen") || "[]",
+  );
+  const cierreHoy = resumenRapida.find((r) => r.fecha === hoy);
+  const ultimoCierre = cierreHoy || resumenRapida[0];
+
+  const totalVentas = ultimoCierre
+    ? ultimoCierre.total
+    : ventasHoy.reduce((sum, v) => sum + v.total, 0);
+  const numVentas = ultimoCierre ? ultimoCierre.ventas : ventasHoy.length;
 
   let costoTotalHoy = 0;
 
