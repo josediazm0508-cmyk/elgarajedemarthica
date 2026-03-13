@@ -779,7 +779,10 @@ function cargarHistorialVentas(fecha = null) {
     .map(
       (v) => `
       <div class="venta-card" onclick="verDetalleFactura(${v.id})">
-        <p><strong>Factura #${v.id}</strong></p>
+        <div>
+          <p><strong>Factura #${v.id}</strong></p>
+          <button class="btn-eliminar" onclick="eliminarVenta(${v.id}, event)">🗑️</button>
+        </div>
         <p>${new Date(v.fecha).toLocaleString("es-CO")}</p>
         <p>Total: $${v.total.toLocaleString("es-CO")}</p>
       </div>
@@ -892,3 +895,17 @@ document.addEventListener("keydown", (e) => {
     document.getElementById("btn-facturar").click();
   }
 });
+
+function eliminarVenta(ventaId, event) {
+  event.stopPropagation();
+
+  if (!confirm("¿Eliminar esta venta? Esta acción no se puede deshacer.")) {
+    return;
+  }
+
+  ventas = ventas.filter((v) => v.id !== ventaId);
+  localStorage.setItem("ventas_db", JSON.stringify(ventas));
+  cargarVentasHoy();
+  cargarHistorialVentas(); 
+
+}
